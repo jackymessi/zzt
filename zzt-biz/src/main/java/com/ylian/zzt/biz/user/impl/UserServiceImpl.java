@@ -22,5 +22,6 @@ public class UserServiceImpl extends BaseService implements UserService{
         user.setName("jacky");
         user.setStatus(0);
         user.setTelephone("11111");
+        user.setTelephone("aaaa");
     }
 }
