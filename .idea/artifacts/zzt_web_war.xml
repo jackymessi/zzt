@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="zzt-web:war">
+    <output-path>$PROJECT_DIR$/zzt-web/target</output-path>
+    <root id="archive" name="zzt.web-1.0.0.war">
+      <element id="artifact" artifact-name="zzt-web:war exploded" />
+    </root>
+  </artifact>
+</component>

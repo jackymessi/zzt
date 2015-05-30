@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+	http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd">
+
+    <context:property-placeholder location="classpath*:META-INF/spring/database.properties" />
+	<context:component-scan base-package="com.ylian.zzt"></context:component-scan>
+
+	<bean id="dataSource" class="org.apache.tomcat.jdbc.pool.DataSource" destroy-method="close">
+        <property name="poolProperties">  
+            <bean class="org.apache.tomcat.jdbc.pool.PoolProperties">    
+                <property name="driverClassName" value="${database.driverClassName}"/>  
+                <property name="url" value="${database.url}"/>    
+                <property name="username" value="${database.username}"/>    
+                <property name="password" value="${database.password}"/>  
+                <property name="jmxEnabled" value="false"/>  
+                <property name="testWhileIdle" value="true"/>  
+                <property name="testOnBorrow" value="true"/>    
+                <property name="testOnReturn" value="true"/>    
+                <property name="validationInterval" value="30000"/>   
+                <property name="validationQuery" value="SELECT 1"/>    
+                <property name="timeBetweenEvictionRunsMillis" value="30000"/>    
+                <property name="maxActive" value="100"/>    
+                <property name="initialSize" value="10"/>    
+                <property name="maxWait" value="10000"/>    
+                <property name="minEvictableIdleTimeMillis" value="30000"/>    
+                <property name="minIdle" value="10"/>    
+                <property name="logAbandoned" value="false"/>    
+                <property name="removeAbandoned" value="true"/>    
+                <property name="removeAbandonedTimeout" value="60"/>  
+                <property name="jdbcInterceptors" value="org.apache.tomcat.jdbc.pool.interceptor.ConnectionState;org.apache.tomcat.jdbc.pool.interceptor.StatementFinalizer"/>    
+            </bean>    
+        </property>    
+    </bean>   
+
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="mapperLocations" value="classpath*:mapper/**/*.xml" />
+	</bean>
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg ref="sqlSessionFactory" />
+	</bean>
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.ylian.zzt.dal.mapper" />
+	</bean>
+
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+    <bean id="velocityConfig"
+          class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
+        <property name="resourceLoaderPath" value="/WEB-INF/page/" />
+        <property name="velocityProperties">
+            <props>
+                <prop key="input.encoding">UTF-8</prop>
+                <prop key="output.encoding">UTF-8</prop>
+            </props>
+        </property>
+        <property name="configLocation" value="classpath:velocity.properties" />
+    </bean>
+
+    <bean id="viewResolver"
+          class="org.springframework.web.servlet.view.velocity.VelocityViewResolver">
+        <property name="cache" value="true" />
+        <property name="prefix" value="/"/>
+        <property name="suffix" value=".html"/>
+        <property name="exposeSessionAttributes" value="true" />
+        <property name="exposeRequestAttributes" value="true" />
+        <property name="requestContextAttribute" value="rc" />
+        <property name="contentType">
+            <value>text/html;charset=UTF-8</value>
+        </property>
+        <property name="dateToolAttribute">
+            <value>dateTool</value>
+        </property>
+        <property name="numberToolAttribute">
+            <value>numberTool</value>
+        </property>
+        <!--if you want to use the SpringVelocitymacros, set this property to true-->
+        <!--property name="exposeSpringMacroHelpers" value="true"/-->
+    </bean>
+
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+</beans>
