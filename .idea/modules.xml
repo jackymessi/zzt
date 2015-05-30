@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/zzt.iml" filepath="$PROJECT_DIR$/zzt.iml" />
+      <module fileurl="file://$PROJECT_DIR$/zzt-biz/zzt-biz.iml" filepath="$PROJECT_DIR$/zzt-biz/zzt-biz.iml" />
+      <module fileurl="file://$PROJECT_DIR$/zzt-dal/zzt-dal.iml" filepath="$PROJECT_DIR$/zzt-dal/zzt-dal.iml" />
+      <module fileurl="file://$PROJECT_DIR$/zzt-web/zzt-web.iml" filepath="$PROJECT_DIR$/zzt-web/zzt-web.iml" />
+    </modules>
+  </component>
+</project>
+

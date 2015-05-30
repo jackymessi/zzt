@@ -1,0 +1,88 @@
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee 
+      http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd" version="2.4">
+
+	<display-name>zzt</display-name>
+	<description>zzt</description>
+
+    <context-param>
+        <param-name>resteasy.servlet.mapping.prefix</param-name>
+        <param-value>/api</param-value>
+    </context-param>
+
+	<context-param>
+		<param-name>javax.ws.rs.Application</param-name>
+		<param-value>com.ylian.zzt.platform.rest.ExtRestApplication</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath:META-INF/spring/applicationContext.xml</param-value>
+	</context-param>
+    <!--
+    <filter>
+        <filter-name>sessionFilter</filter-name>
+        <filter-class>com.ylian.zzt.platform.rest.SessionFilter</filter-class>
+    </filter>-->
+
+	<filter>
+		<filter-name>encodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+		<init-param>
+			<param-name>forceEncoding</param-name>
+			<param-value>true </param-value>
+		</init-param>
+	</filter>
+
+	<listener>
+		<listener-class>org.jboss.resteasy.plugins.server.servlet.ResteasyBootstrap</listener-class>
+	</listener>
+
+	<listener>
+		<listener-class>org.jboss.resteasy.plugins.spring.SpringContextLoaderListener</listener-class>
+	</listener>
+
+	<servlet>
+		<servlet-name>Resteasy</servlet-name>
+		<servlet-class>org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher</servlet-class>
+	</servlet>
+
+    <servlet>
+        <servlet-name>ylian</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:META-INF/spring/applicationContext.xml</param-value>
+        </init-param>
+    </servlet>
+
+    <!--
+    <filter-mapping>
+        <filter-name>sessionFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping> -->
+
+    <servlet-mapping>
+        <servlet-name>Resteasy</servlet-name>
+        <url-pattern>/api/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>ylian</servlet-name>
+        <url-pattern>/action/*</url-pattern>
+    </servlet-mapping>
+
+	 <filter-mapping>
+        <filter-name>encodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+	
+	<session-config>
+		<session-timeout>30</session-timeout>
+	</session-config>
+
+</web-app>
